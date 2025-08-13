@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        // handle edge case if vector length is less than 3
+        if(height.size() < 3){
+            return 0;
+        }
+
+        // get length of vector
+        int n = height.size();
+
+        // create max left and max right vectors to store the max L and R at each position
+        vector<int> maxL(n, 0);
+        vector<int> maxR(n, 0);
+
+        // cretae storage variable for left and right walls
+        int Lwall = 0;
+        int Rwall = 0;
+
+        // initalise left max and right max walls
+        maxL[0] = 0;
+        maxR[n - 1] = 0;
+        int j;
+
+        // declare variable for total water storage
+        int total = 0;
+        
+        // loop through each position
+        for(int i = 0; i < n ; i++){
+            j = n - i -1;
+            maxL[i] = Lwall;
+            maxR[j] = Rwall;
+            Lwall = max(height[i], Lwall);
+            Rwall = max(height[j], Rwall);
+        }
+
+        //loop to calculate the water storage between walls at each position
+        for(int i = 0; i < n ; i++){
+            total += max(0, min(maxL[i], maxR[i]) - height[i]);
+        }
+
+        return total;
+    }
+};
